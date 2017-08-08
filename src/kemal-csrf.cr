@@ -12,7 +12,7 @@ require "kemal-session"
 #
 class CSRF < Kemal::Handler
   
-  def initialize(@header = "X_CSRF_TOKEN", @allowed_methods = %w(GET HEAD OPTIONS TRACE), @parameter_name = "authenticity_token", @error : String | (HTTP::Server::Context->String) = "Forbidden", @allowed_routes = [] of String)
+  def initialize(@header = "X_CSRF_TOKEN", @allowed_methods = %w(GET HEAD OPTIONS TRACE), @parameter_name = "authenticity_token", @error : String | (HTTP::Server::Context->String) = "Forbidden", @allowed_routes = [] of String, @secure = false)
     setup
   end 
 
@@ -34,7 +34,8 @@ class CSRF < Kemal::Handler
         name: @parameter_name,
         value: csrf_token,
         expires: Time.now.to_utc + Kemal::Session.config.timeout,
-        http_only: false
+        http_only: false,
+        secure: @secure_cookie
       )
     end
 
