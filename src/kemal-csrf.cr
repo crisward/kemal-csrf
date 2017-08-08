@@ -35,7 +35,7 @@ class CSRF < Kemal::Handler
         value: csrf_token,
         expires: Time.now.to_utc + Kemal::Session.config.timeout,
         http_only: false,
-        secure: @secure_cookie
+        secure: @secure
       )
     end
 
